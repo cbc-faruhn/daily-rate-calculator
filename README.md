@@ -25,6 +25,7 @@ The tool uses JavaScript on client-side for all the calculations. For storing in
 ## Creator / Imprint
 
 Ibrahim-Ben Faruhn
+
 [hello@cbc-faruhn.com](mailto:hello@cbc-faruhn.com)
 [+49 176 29 47 48 87](tel:+49 176 29 47 48 87)
 
