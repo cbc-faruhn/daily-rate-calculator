@@ -1,37 +1,37 @@
-## Welcome to GitHub Pages
+## The Daily Rate Calculator
 
-You can use the [editor on GitHub](https://github.com/cbc-faruhn/daily-rate-calculator/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+The Daily Rate Calculator is a Web App based on VueJS 2.x, Bootstrap 4 and JQuery 3.3. You can use it for free without warranty.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+It primary answers two questions:
+- What daily rate do I have to offer at least for a given number of contracted days to have my tax and costs covered?
+- How long to I have to work for a given daily rate to have my tax and costs covered?
 
-### Markdown
+It's abstraction allows to be adjusted for different tax models. I comes with a simplified tax model for Germany consisting of it's three main parts income tax, church tax and solidarity supplement.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+### Data transferred to the server
 
-```markdown
-Syntax highlighted code block
+None, except the standard http protocol data. This tool neither sends any of your input data to the server nor does it collect usage data or uses cookies.
 
-# Header 1
-## Header 2
-### Header 3
+### The technology used
 
-- Bulleted
-- List
+The tool uses JavaScript on client-side for all the calculations. For storing information it uses the [Web API LocalStorage](https://developer.mozilla.org/en/docs/Web/API/Window/localStorage)
 
-1. Numbered
-2. List
+## Online Version
+[Daily Rate Calculator](http://tools.cbc-faruhn.com/daily-rate-calculator/)
 
-**Bold** and _Italic_ and `Code` text
+## Source Code
+[Daily Rate Calculator on GitHub](http://github.com/cbc-faruhn/daily-rate-calculator/)
 
-[Link](url) and ![Image](src)
-```
+## Creator / Imprint
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+Ibrahim-Ben Faruhn
+[hello@cbc-faruhn.com](mailto:hello@cbc-faruhn.com)
+[+49 176 29 47 48 87](tel:+49 176 29 47 48 87)
 
-### Jekyll Themes
+Müggelseedamm 157
+12587 Berlin
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/cbc-faruhn/daily-rate-calculator/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+IBAN: DE57 1101 0100 1000 0004 52
+BIC: SOBKDEBBXXX (solarisBank)
 
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+VAT-ID: DE 309 715 667
