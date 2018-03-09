@@ -38,7 +38,7 @@ var app = new Vue({
             'en': 'English'
         },
 
-        sourceCodeUrl: 'https://cbc-faruhn.github.io/daily-rate-calculator'
+        sourceCodeUrl: 'https://github.com/cbc-faruhn/daily-rate-calculator'
     },
 
     created: function() {
