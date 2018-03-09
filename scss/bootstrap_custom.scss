@@ -1,0 +1,55 @@
+/* variables & theme colors */
+
+$cbc-blue:      #0B3070;
+$cbc-green:     #77A000;
+$cbc-orange:    #A94600;
+
+$primary:       $cbc-blue;
+$secondary:   $cbc-green;
+$secondary-1:   $cbc-green;
+$secondary-2:   $cbc-orange;
+
+$dark:          $primary;
+$light:       #E9ECEF;
+
+$theme-colors: (
+  "primary": $primary,
+  "secondary": $secondary-1,
+
+  "info": #32548F,
+  "success": $secondary-1,
+  "danger": #FF4136,
+  "warning": #D77D3D,
+
+  "secondary-1": $secondary-1,
+  "secondary-2": $secondary-2,
+
+  "dark-gray": #212529,
+  "light-gray": #E9ECEF,
+
+  "cbc-blue": $cbc-blue,
+  "cbc-green": $cbc-green,
+  "cbc-orange": $cbc-orange,
+);
+
+/* setting further colors */
+$body-color:                        $primary;
+
+$link-color:                        $secondary !default;
+$link-decoration:                   underline $primary !default;
+$link-hover-color:                  lighten($secondary, 15%) !default;
+$link-hover-decoration:             underline $secondary-2 !default;
+
+$navbar-dark-color:                 theme-color("secondary") /* rgba($white, .5) */ !default;
+$navbar-dark-hover-color:           theme-color("info") /* rgba($white, .75) */ !default;
+$navbar-dark-active-color:          theme-color("info") /* $white */ !default;
+$navbar-dark-disabled-color:        theme-color("light-gray") /* rgba($white, .25) */ !default;
+$navbar-dark-toggler-icon-bg:       str-replace(url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='#{$navbar-dark-color}' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E"), "#", "%23") !default;
+$navbar-dark-toggler-border-color:  theme-color("cbc-blue") /* rgba($white, .1) */ !default;
+
+$navbar-default-brand-color:        $secondary !default;
+$navbar-default-brand-hover-color:  $secondary !default;
+$navbar-default-brand-hover-bg:     transparent !default;
+
+/* import all other bootstrap styles*/
+@import "../bootstrap-4.0.0/scss/bootstrap";

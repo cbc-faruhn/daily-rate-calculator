@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, shrink-to-fit=no">
+
+    <!-- jQuery & Popper.js -->
+    <script type="text/javascript" src="lib/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript">
+        if (typeof require != 'undefined') {
+            window.jQuery = window.$ = require('jquery');
+        }
+    </script>
+    <script type="text/javascript" src="lib/popper-1.12.9.min.js"></script>
+
+    <!-- Bootstrap -->
+    <script type="text/javascript" src="lib/bootstrap-4.0.0.min.js"></script>
+    <script type="text/javascript">
+        if (typeof require != 'undefined') {
+            window.Bootstrap = require('bootstrap');
+        }
+    </script>
+    <link rel="stylesheet" href="styles/bootstrap_custom.css">
+
+    <!-- VueJS -->
+    <script type="text/javascript" src="lib/vue-2.5.13.min.js"></script>
+
+    <title></title>
+</head>
+
+<body>
+    <div id="app">
+        <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+            <span class="navbar-brand text-secondary">
+                <img src="images/Logo_main_bordered.svg" height="30" class="d-inline-block align-top mr-3" alt="">
+                <span>{{ getMessage('Daily Rate Calculator') }}</span>
+            </span>
+
+            <!-- menu for minimal display space -->
+            <div class="navbar-toggler">
+                <div class="nav-item dropdown">
+                    <div class="nav-link p-0 dropdown-toggle text-white text-right" data-toggle="dropdown" href="#" id="navbarToogler" role="button" aria-haspopup="true" aria-expanded="false"></div>
+                    <div class="dropdown-menu p-2" aria-labelledby="navbarToogler" style="right: 0; left: auto;">
+                        <a class="dropdown-item" href="javascript:void(0);" v-for="(language, key) in languages" v-bind:class="[lang != key ? '' : 'text-muted']" v-on:click="lang = key">{{ languages[key] }}</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="javascript:void(0);" v-bind:class="[!mode_calc_rate ? '' : 'text-muted']" v-on:click="mode_calc_rate = !mode_calc_rate ? !mode_calc_rate : mode_calc_rate">{{ getMessage('Daily Rate') }}</a>
+                        <a class="dropdown-item" href="javascript:void(0);" v-bind:class="[ mode_calc_rate ? '' : 'text-muted']" v-on:click="mode_calc_rate =  mode_calc_rate ? !mode_calc_rate : mode_calc_rate">{{ getMessage('Days to be ordered') }}</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" v-bind:href="sourceCodeUrl" target="_blank">{{ getMessage('Source Code / About') }}</a>
+                        <a class="dropdown-item text-danger" href="javascript:void(0);" v-on:click="resetApp()">{{ getMessage('Reset / Delete Data') }}</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- menu for all other sizes -->
+            <div class="navbar-collapse">
+                <div class="navbar-nav d-none d-lg-inline-block d-xl-inline-block">
+                        <div class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-white" href="#" id="navbarGetLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{ getMessage('Options') }}
+                            </a>
+                            <div class="dropdown-menu p-2" v-if="!isRunningAsApp()" aria-labelledby="navbarGetLink">
+                                <span class="dropdown-item text-muted" style="cursor: default;" href="downloads/Daily Rate Calculator-win-x64-1.0.0.zip">{{ getMessage('App for Windows') }}</span>
+                                <a class="dropdown-item" href="downloads/Daily Rate Calculator-darwin-x64-1.0.0.zip">{{ getMessage('App for Mac') }}</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" v-bind:href="sourceCodeUrl" target="_blank">{{ getMessage('Source Code / About') }}</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item text-danger" href="javascript:void(0);" v-on:click="resetApp()">{{ getMessage('Reset / Delete Data') }}</a>
+                            </div>
+                            <div class="dropdown-menu p-2" v-if="isRunningAsApp()" aria-labelledby="navbarGetLink">
+                                <a class="dropdown-item" href="javascript:void(0);" v-on:click="electronOpenSourceCode()">{{ getMessage('Source Code / About') }}</a>
+                                <a class="dropdown-item text-danger" href="javascript:void(0);" v-on:click="resetApp()">{{ getMessage('Reset / Delete Data') }}</a>
+                            </div>
+                        </div>
+                </div>
+                <div class="navbar-nav ml-auto d-none d-lg-inline-block d-xl-inline-block">
+                    <span class="navbar-text text-white">{{ getMessage('Mode Selection') }}</span>
+                    <div class="nav-item btn-group ml-3" role="group" aria-label="Mode Selector">
+                        <button type="button" id="modeSwitch1" v-bind:class="[ mode_calc_rate ? 'btn-secondary' : 'btn-outline-secondary bg-white', 'btn']" v-on:click="mode_calc_rate = !mode_calc_rate">{{ getMessage('Daily Rate') }}</button>
+                        <button type="button" id="modeSwitch2" v-bind:class="[!mode_calc_rate ? 'btn-secondary' : 'btn-outline-secondary bg-white', 'btn']" v-on:click="mode_calc_rate = !mode_calc_rate">{{ getMessage('Days to be ordered') }}</button>
+                    </div>
+
+                    <div class="nav-item btn-group ml-3" role="group" aria-label="Language Selector">
+                        <button v-for="(language, key) in languages" type="button" v-bind:id="'lang-switch-'+ key" v-bind:class="[ lang == key ? 'btn-secondary' : 'btn-outline-secondary bg-white', 'btn']" v-on:click="lang = key">{{ languages[key] }}</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- dummy navbar for spacing because actual navbar is fixed to the top -->
+        <div class="navbar">
+            <span class="navbar-brand">
+                <span style="height: 30px; width: 30px;" class="d-inline-block align-top mr-3"></span>
+            </span>
+        </div>
+
+        <div class="container-fluid">
+            <div class="row d-block d-lg-none">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                        <div class="card mt-3">
+                            <div class="card-header font-weight-bold">
+                                {{ getMessage('Live Result (as you type)') }}
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div v-if="showRateHint || showContractHint" class="d-flex alert alert-danger mb-0" role="alert">
+                                            {{ getMessage('Please enter the contract data below!') }}
+                                        </div>
+
+                                        <div v-if="!showRateHint">
+                                            <div v-if="mode_calc_rate">
+                                                <div class="d-inline-block pr-3 mr-0 border-right">{{ daily_rate }}&nbsp;{{ currency }} / {{ getMessage('Day') }}</div><div class="d-inline-block pl-3 ml-0 border-left">{{ hourly_rate }}&nbsp;{{ currency }} / {{ getMessage('Hour') }}</div>
+                                            </div>
+                                            <div v-if="!mode_calc_rate">
+                                                <div class="d-inline pr-3 mr-0 border-right">{{ contract_days }}&nbsp;{{ getMessage('Days') }}</div><div class="d-inline pl-3 ml-0 border-left">{{ contract_hours }}&nbsp;{{ getMessage('Hours') }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <div class="row justify-content-md-center">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-8 col-xl-9">
+                    <div id="accordion" class="mt-3 mb-3">
+
+                        <!-- contract data for smaller display sizes -->
+                        <div class="card d-block d-lg-none">
+                            <div class="card-header" id="headingContractCosts">
+                                <button v-on:click="helperHideAll()" class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseContractData" aria-expanded="false" aria-controls="collapseContractCosts">
+                                        {{ getMessage('Contract Data') }}
+                                </button>
+                            </div>
+                            <div id="collapseContractData" class="collapse" aria-labelledby="collapseContractData" data-parent="#accordion">
+                                <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label for="hourlyRateSmallScreen">{{ getMessage('Contract Duration') }}</label>
+                                                    <div class="input-group">
+                                                        <input type="number" class="form-control" id="hourlyRateSmallScreen" v-model="contract_time">
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text">{{ getMessage('Months') }}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                
+                                            <div v-if="!mode_calc_rate" class="form-group col-12">
+                                                <label for="dailyRateSmallScreen">{{ getMessage('Minimum Daily Rate') }}</label>
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control" id="dailyRateSmallScreen" v-model="daily_rate" v-bind:disabled="mode_calc_rate">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">{{ currency }}</span>
+                                                    </div>
+                                                </div>
+                                                
+                                                <label for="hourlyRate">{{ getMessage('Minimum Hourly Rate') }}</label>
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control" id="hourlyRate" v-model="hourly_rate" v-bind:disabled="mode_calc_rate">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">{{ currency }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            
+                                            <div v-if="mode_calc_rate" class="form-group col-12">
+                                                <label for="contractDays">{{ getMessage('Minimum Contract Days') }}</label>
+                                                <input type="number" class="form-control" id="contractDays" v-model="contract_days" v-bind:disabled="!mode_calc_rate">
+                                            
+                                                <label for="contractHours">{{ getMessage('Minimum Contract Hours') }}</label>
+                                                <input type="number" class="form-control" id="contractHours" v-model="contract_hours" v-bind:disabled="!mode_calc_rate">
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- contract costs -->
+                        <div class="card">
+                            <div class="card-header" id="headingContractCosts">
+                                <button v-on:click="helperHideAll()" class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseContractCosts" aria-expanded="true" aria-controls="collapseContractCosts">
+                                        {{ getMessage('Costs due to the contract') }}
+                                </button>
+                            </div>
+                            <div id="collapseContractCosts" class="collapse show" aria-labelledby="collapseContractCosts" data-parent="#accordion">
+                                <div class="card-body">
+                                    <div class="form-group row" v-for="(transaction, key) in transactionsContract">
+                                        <label v-if="!transaction.isTypeContractOther" class="col-4">
+                                            {{ getMessage(transaction.category) }}
+                                        </label>
+                                        <div v-else class="input-group col-4">
+                                            <select v-model="transaction.category" class="input-group-text col-sm-12">
+                                                <option v-for="(category, index) in transactionCategories" v-bind:value="index" v-bind:selected="transaction.category == index">{{ getMessage(category) }}</option>
+                                            </select>
+                                        </div>
+                                        <div class="input-group col-8">
+                                            <input type="number" v-model="transaction.value" class="form-control" v-on:keyup="calculate();" v-on:change="calculate();">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">{{ currency }} / {{ getMessage(transactionIndicator[transaction.indicator]) }}</span>
+                                                <button v-if="transaction.isTypeContractOther" class="close ml-3" aria-label="Close" v-on:click="deleteTransaction(transaction)">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr v-if="transactionsContract.length > 0">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <button type="button" class="btn btn-primary btn-sm mr-3 mb-3" v-on:click="addTransaction(transactionType.EXP_CONTRACT_OTHER_PER_DAY)">{{ getMessage('Add Per-Day Expense') }}</button>
+                                            <button type="button" class="btn btn-primary btn-sm mr-3 mb-3" v-on:click="addTransaction(transactionType.EXP_CONTRACT_OTHER_MONTHLY)">{{ getMessage('Add Monthly Expense') }}</button>
+                                            <button type="button" class="btn btn-primary btn-sm mb-3" v-on:click="addTransaction(transactionType.EXP_CONTRACT_OTHER_ONCE)">{{ getMessage('Add One-Time Expense') }}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- regular costs -->
+                        <div class="card">
+                            <div class="card-header" id="headingRegularCosts">
+                                <button v-on:click="helperHideAll()" class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseRegularCosts" aria-expanded="false" aria-controls="collapseRegularCosts">
+                                        {{ getMessage('Monthly Expense / Income') }}
+                                </button>
+                                <button v-on:click="helperHideAll()" class="btn btn-link float-right" data-toggle="collapse" data-target="#collapseRegularCosts" aria-expanded="false" aria-controls="collapseRegularCosts">
+                                    {{ formatCurrency(regularCosts) }}&nbsp;{{ currency }}
+                                </button>
+                            </div>
+                            <div id="collapseRegularCosts" class="collapse" aria-labelledby="headingRegularCosts" data-parent="#accordion">
+                                <div class="card-body">
+                                    <div class="form-group row" v-for="(transaction, key) in transactionsOther">
+                                            <div class="input-group col-4">
+                                                <select v-model="transaction.category" class="input-group-text col-sm-12">
+                                                    <option v-for="(category, index) in transactionCategories" v-bind:value="index" v-bind:selected="transaction.category == index">{{ getMessage(category) }}</option>
+                                                </select>
+                                            </div>
+                                            <div class="input-group col-8">
+                                                <input type="number" v-model="transaction.value" class="form-control" v-on:keyup="calculate();" v-on:change="calculate();">
+                                                <div class="input-group-append">
+                                                    <span v-bind:class="['input-group-text', transaction.type == transactionType.INC_REGULAR_MISC_MONTHLY? 'text-success' : '']">{{ currency }} / {{ getMessage(transactionIndicator[transaction.indicator]) }}</span>
+                                                    <button class="close ml-3" aria-label="Close" v-on:click="deleteTransaction(transaction)">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                    </div>
+                                    <hr v-if="transactionsOther.length > 0">
+                                    <div class="form-group">
+                                        <div class="input-group"></div>
+                                        <div class="input-group">
+                                            <button type="button" class="btn btn-primary btn-sm mr-3 mb-3" v-on:click="addTransaction(transactionType.EXP_REGULAR_MISC_MONTHLY)">{{ getMessage('Add Expense') }}</button>
+                                            <button type="button" class="btn btn-primary btn-sm mb-3" v-on:click="addTransaction(transactionType.INC_REGULAR_MISC_MONTHLY)">{{ getMessage('Add Income') }}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- soacial costs -->
+                        <div class="card">
+                            <div class="card-header" id="headingSocialCosts">
+                                <button v-on:click="helperHideAll()" class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseSocialCosts" aria-expanded="false" aria-controls="collapseSocialCosts">
+                                    {{ getMessage('Monthly Social Security Contributions') }}
+                                </button>
+                                <button v-on:click="helperHideAll()" class="btn btn-link float-right" data-toggle="collapse" data-target="#collapseSocialCosts" aria-expanded="false" aria-controls="collapseSocialCosts">
+                                    {{ formatCurrency(socialCosts) }}&nbsp;{{ currency }}
+                                </button>
+                            </div>
+                            <div id="collapseSocialCosts" class="collapse" aria-labelledby="headingSocialCosts" data-parent="#accordion">
+                                <div class="card-body">
+                                    <div class="form-group row" v-for="(transaction, key) in transactionsSocial">
+                                        <label v-bind:for="key" class="col-4">{{ getMessage(transaction.category) }}</label>
+                                        <div class="input-group col-8">
+                                            <input type="number" v-model="transaction.value" class="form-control" v-bind:id="key" v-on:keyup="calculate();" v-on:change="calculate();" v-bind:placeholder="getMessage(transaction.category)">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">{{ currency }} / {{ getMessage(transactionIndicator[transaction.indicator]) }}</span>
+                                                <button v-if="hasHelper(transaction.type)" class="btn btn-outline-secondary btn-helper-toggle" v-bind:id="'helper-toggle-'+ key" type="button" v-on:click="helperShow('helper-toggle-'+ key, transaction.type, transaction)" v-on:mousedown="helperRegisterPopover('helper-toggle-'+ key, transaction.type, transaction)">
+                                                    <span v-if="hasDifferentHelperValue(transaction.type, transaction)">*</span>i
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- tax -->
+                        <div class="card">
+                            <div class="card-header" id="headingTax">
+                                <button v-on:click="helperHideAll()" class="btn btn-link" data-toggle="collapse" data-target="#collapseTax" aria-expanded="false" aria-controls="collapseTax">
+                                    {{ getMessage('Tax') }}
+                                </button>
+                                <button v-on:click="helperHideAll()" class="btn btn-link float-right" data-toggle="collapse" data-target="#collapseTax" aria-expanded="false" aria-controls="collapseTax">
+                                    {{ Math.round(tax * 100) }}&nbsp;%
+                                </button>
+                            </div>
+
+                            <div id="collapseTax" class="collapse" aria-labelledby="headingTax" data-parent="#accordion">
+                                <div class="card-body">
+                                    <div class="form-group row" v-for="(tax, key) in tax_system.components">
+                                        <label v-bind:for="key" class="col-4">{{ getMessage(tax.label) }}</label>
+                                        <div class="input-group col-8">
+                                            <input type="number" v-model="tax.value" class="form-control" v-bind:id="key" v-on:keyup="calculate();" v-on:change="calculate();" v-bind:placeholder="tax.label">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">{{ tax.unit }}</span>
+                                                <button v-if="hasHelper(key)" class="btn btn-outline-secondary btn-helper-toggle" v-bind:id="'helper-toggle-'+ key" type="button" v-on:click="helperShow('helper-toggle-'+ key, key, tax)" v-on:mousedown="helperRegisterPopover('helper-toggle-'+ key, key, tax)">
+                                                    <span v-if="hasDifferentHelperValue(key, tax)">*</span>i
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-none d-lg-inline-block col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3">
+                    <div class="card mt-3 mb-3">
+                        <div class="card-header font-weight-bold">
+                            {{ getMessage('Live Result (as you type)') }}
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="hourlyRate">{{ getMessage('Contract Duration') }}</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="hourlyRate" v-model="contract_time">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">{{ getMessage('Months') }}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div v-if="showRateHint" class="d-flex mt-3 alert alert-danger" role="alert">
+                                {{ getMessage('Don\'t forget to enter the number of days or hours that will be contracted below to get the daily or hourly rate.') }}
+                            </div>
+                            <div v-if="!showRateHint" class="form-group">
+                                <label for="dailyRate">{{ getMessage('Minimum Daily Rate') }}</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="dailyRate" v-model="daily_rate" v-bind:disabled="mode_calc_rate">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">{{ currency }}</span>
+                                    </div>
+                                </div>
+                                
+                                <label for="hourlyRate">{{ getMessage('Minimum Hourly Rate') }}</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="hourlyRate" v-model="hourly_rate" v-bind:disabled="mode_calc_rate">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">{{ currency }}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+                            
+                            <div v-if="showContractHint" class="d-flex mt-3 alert alert-danger" role="alert">
+                                {{ getMessage('Don\'t forget to enter your targeted daily or hourly rate above to get the number of days that at least need to be contracted.') }}
+                            </div>
+                            <div v-if="!showContractHint" class="form-group">
+                                <label for="contractDays">{{ getMessage('Minimum Contract Days') }}</label>
+                                <input type="number" class="form-control" id="contractDays" v-model="contract_days" v-bind:disabled="!mode_calc_rate">
+                            
+                                <label for="contractHours">{{ getMessage('Minimum Contract Hours') }}</label>
+                                <input type="number" class="form-control" id="contractHours" v-model="contract_hours" v-bind:disabled="!mode_calc_rate">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="helpers-contents" class="d-none">
+            <div v-for="(helper, index) in helpers">
+                <div v-bind:id="'helper-'+ helper.type">
+                    <div v-for="(component, key) in helper.components" class="form-group">
+                        <label v-if="component.type != 'boolean'" v-bind:for="'helper-'+ helper.type +'-'+ key">{{ getMessage(component.label) }}</label>
+                        <div class="input-group" v-if="component.type != 'boolean'">
+                            <input v-bind:type="component.type" class="form-control" v-bind:id="'helper-'+ helper.type +'-'+ key" v-model="component.value">
+                            <div class="input-group-append">
+                                <span class="input-group-text">{{ component.unit }}</span>
+                            </div>
+                        </div>
+                        <div class="form-check" v-else>
+                            <input class="form-check-input" type="checkbox" v-model="component.value" v-bind:id="'helper-'+ helper.type +'-'+ key" >
+                            <label class="form-check-label" v-bind:for="'helper-'+ helper.type +'-'+ key">{{ getMessage(component.label) }}</label>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    <button type="button" class="btn btn-primary" v-on:click="helper.emitChange()">{{ getMessage('Calculate / Take Over') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- start the app -->
+    <script src="scripts/transactions.js"></script>
+    <script src="scripts/transactionHelper.js"></script>
+
+    <script src="scripts/tax.js"></script>
+    <script src="scripts/taxSimplifiedGermany.js"></script>
+    <script src="scripts/taxHelper.js"></script>
+
+    <script src="scripts/settings.js"></script>
+    <script src="scripts/messages.js"></script>
+    <script src="scripts/app.js"></script>
+
+    <!-- transaction helpers need to register, so put loading to the end -->
+    <script src="scripts/transactionHelperHealthInsurance.js"></script>
+    <script src="scripts/transactionHelperPensionInsurance.js"></script>
+    <script src="scripts/transactionHelperUnemploymentInsurance.js"></script>
+
+    <!-- tax helpers need to register, so put loading to the end -->
+    <script src="scripts/taxHelperIncomeTax.js"></script>
+</body>
+
+</html>
