@@ -93,20 +93,18 @@ So the following formula gives us one relative value which is the combined or to
 total tax = relative income tax * (1 + solidarity supplement + church tax)
 ```
 
-**It should be noted that the constants may change with every year in Germany. It will _try_ to keep them updated.**
+**It should be noted that the constants may change with every year in Germany. It will _try_ to keep them updated.** This should be easy, as the constants have their own variable in the source code.
 
 ## Online Version
 [Daily Rate Calculator](http://tools.cbc-faruhn.com/daily-rate-calculator/)
-
-## Source Code
-[Daily Rate Calculator on GitHub](http://github.com/cbc-faruhn/daily-rate-calculator/)
 
 ## Creator / Imprint
 
 Ibrahim-Ben Faruhn
 
+[www.cbc-faruhn.com](http://www.cbc-faruhn.com)
 [hello@cbc-faruhn.com](mailto:hello@cbc-faruhn.com)
-[0049 176 29 47 48 87](tel:0049 176 29 47 48 87)
++49 176 29 47 48 87
 
 Müggelseedamm 157
 12587 Berlin
