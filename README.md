@@ -26,7 +26,7 @@ The following two formulas seem trivial but they should be mentioned for a clear
 total brutto costs = (∑ monthly expenses - ∑ monthly income) + ∑ social costs
 ```
 
-**This is the point, where trivial is not trivial: the monthly income is meant to be netto income so that they even out each other.**
+**At that point, trivial might not be trivial: the monthly income is meant to be netto income, i.e. tax already substracted, so that they even out the netto expenses.**
 
 ```
 costs due to order =
