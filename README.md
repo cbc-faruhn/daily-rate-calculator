@@ -111,8 +111,8 @@ total tax = relative income tax * (1 + solidarity supplement + church tax)
 
 Ibrahim-Ben Faruhn
 
-[www.cbc-faruhn.com](http://www.cbc-faruhn.com)
-[hello@cbc-faruhn.com](mailto:hello@cbc-faruhn.com)
+[www.cbc-faruhn.com](http://www.cbc-faruhn.com) 
+[hello@cbc-faruhn.com](mailto:hello@cbc-faruhn.com) 
 +49 176 29 47 48 87
 
 Müggelseedamm 157
