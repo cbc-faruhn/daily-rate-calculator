@@ -10,6 +10,9 @@ It's abstraction allows to be adjusted for different tax models. Currently it ju
 
 For the most cases in Germany that should fit -- and in doubt it creates higher tax costs. That is a safe mode and you better put too much than too less money aside for the fiscal government.
 
+### Online Version
+You can find a running version here: http://tools.cbc-faruhn.com/daily-rate-calculator/
+
 ### Data transferred to the server
 
 None, except the standard http protocol data. This tool neither sends any of your input data to the server nor does it collect usage data or uses cookies.
@@ -103,9 +106,6 @@ total tax = relative income tax * (1 + solidarity supplement + church tax)
 ```
 
 **It should be noted that the constants may change with every year in Germany. I will _try_ to keep them updated.** This should be easy, as the constants have their own variable in the source code.
-
-## Online Version
-[Daily Rate Calculator](http://tools.cbc-faruhn.com/daily-rate-calculator/)
 
 ## Creator / Imprint
 
