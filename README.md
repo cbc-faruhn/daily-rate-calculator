@@ -111,15 +111,14 @@ total tax = relative income tax * (1 + solidarity supplement + church tax)
 
 Ibrahim-Ben Faruhn
 
-Web: [www.cbc-faruhn.com](http://www.cbc-faruhn.com) 
-Mail: [hello@cbc-faruhn.com](mailto:hello@cbc-faruhn.com) 
-Tel: +49 176 29 47 48 87
+[www.cbc-faruhn.com](http://www.cbc-faruhn.com)  
+[hello@cbc-faruhn.com](mailto:hello@cbc-faruhn.com)  
++49 176 29 47 48 87  
+  
+Müggelseedamm 157  
+12587 Berlin  
 
-Living in:
-Müggelseedamm 157
-12587 Berlin
-
-IBAN: DE57 1101 0100 1000 0004 52
-BIC: SOBKDEBBXXX (solarisBank)
-
-VAT-ID: DE 309 715 667
+IBAN: DE57 1101 0100 1000 0004 52  
+BIC: SOBKDEBBXXX (solarisBank)  
+  
+VAT-ID: DE 309 715 667  
