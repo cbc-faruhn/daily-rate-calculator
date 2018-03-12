@@ -63,7 +63,7 @@ yearly revenue = total brutto costs * 12
 **This is the point where it becomes a bit fuzzy, because your income might vary from project to project.**
 A solution to this could be to take your yearly revenue * 1.5 or * 1.75. On the other hand, you could add a monthly "expense" to raise your monthly needed income. That raises your daily rate on the one hand, but also gives you freedom to save some money for future use.
 
-In that paragraph three variables are introduced and defined as following:
+In the above mentioned paragraph three variables are introduced and defined as following:
 
 ```
 let x = floor(yearly revenue)
@@ -92,7 +92,7 @@ if 260532.00 < yearly revenue then
 relative income tax = absolute income tax / yearly revenue
 ```
 
-This formulas are given by §32a EStG -- so please don't ask me, why a specific constant is used.
+These formulas are given by §32a EStG -- so please don't ask me, why a specific constant is used.
 
 Then there are the church tax and the solidarity supplement. These are relative, but not to the yearly revenue but to the actual absolute income tax. In other words, church tax and solidarity supplement are relatively added to the income tax. 
 
@@ -102,7 +102,7 @@ So the following formula gives us one relative value which is the combined or to
 total tax = relative income tax * (1 + solidarity supplement + church tax)
 ```
 
-**It should be noted that the constants may change with every year in Germany. It will _try_ to keep them updated.** This should be easy, as the constants have their own variable in the source code.
+**It should be noted that the constants may change with every year in Germany. I will _try_ to keep them updated.** This should be easy, as the constants have their own variable in the source code.
 
 ## Online Version
 [Daily Rate Calculator](http://tools.cbc-faruhn.com/daily-rate-calculator/)
@@ -111,10 +111,11 @@ total tax = relative income tax * (1 + solidarity supplement + church tax)
 
 Ibrahim-Ben Faruhn
 
-[www.cbc-faruhn.com](http://www.cbc-faruhn.com) 
-[hello@cbc-faruhn.com](mailto:hello@cbc-faruhn.com) 
-+49 176 29 47 48 87
+Web: [www.cbc-faruhn.com](http://www.cbc-faruhn.com) 
+Mail: [hello@cbc-faruhn.com](mailto:hello@cbc-faruhn.com) 
+Tel: +49 176 29 47 48 87
 
+Living in:
 Müggelseedamm 157
 12587 Berlin
 
