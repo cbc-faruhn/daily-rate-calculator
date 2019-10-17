@@ -115,7 +115,7 @@ Ibrahim-Ben Faruhn
 [hello@cbc-faruhn.com](mailto:hello@cbc-faruhn.com)  
 +49 176 29 47 48 87  
   
-Müggelseedamm 157  
+Karl-Pokern-Str. 30  
 12587 Berlin  
 
 IBAN: DE57 1101 0100 1000 0004 52  
